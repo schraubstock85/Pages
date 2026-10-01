@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <title>Entwürfe – Familie Gröger</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --fg: #2f3b35;
+      --muted: #7a8279;
+      --line: #c9c3b6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1b201d;
+        --fg: #ece8df;
+        --muted: #8f978e;
+        --line: #3a423d;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+      text-align: center;
+    }
+    section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100svh;
+      padding: 2rem;
+      border-bottom: 1px dashed var(--line);
+      position: relative;
+    }
+    .label {
+      position: absolute;
+      top: 1rem;
+      left: 0;
+      right: 0;
+      color: var(--muted);
+      font: 0.75rem -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .monogramm {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4.5rem;
+      height: 4.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      font-size: 2rem;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: clamp(2.25rem, 8vw, 3.5rem);
+      letter-spacing: 0.02em;
+    }
+    .trenner {
+      width: 3rem;
+      height: 1px;
+      margin: 1.75rem auto;
+      background: var(--line);
+    }
+    .klein {
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    /* Variante A */
+    .initialen {
+      font-size: 1.15rem;
+      letter-spacing: 0.35em;
+      color: var(--fg);
+    }
+    .initialen span { color: var(--line); letter-spacing: 0.35em; }
+
+    /* Variante B */
+    .kreise {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .kreise div {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+    }
+    .kreise .gross { width: 3.25rem; height: 3.25rem; font-size: 1.4rem; }
+    .kreise .klein-k { width: 2.4rem; height: 2.4rem; font-size: 1.05rem; }
+
+    /* Variante C */
+    .eltern { font-size: 1.35rem; letter-spacing: 0.2em; }
+    .kinder { margin-top: 0.6rem; font-size: 1rem; letter-spacing: 0.35em; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <section>
+    <div class="label">Variante A – Initialen statt Domain</div>
+    <div class="monogramm" aria-hidden="true">G</div>
+    <h1>Familie Gröger</h1>
+    <div class="trenner" aria-hidden="true"></div>
+    <p class="initialen">A<span>·</span>R<span>·</span>L<span>·</span>B<span>·</span>A<span>·</span>J</p>
+  </section>
+
+  <section>
+    <div class="label">Variante B – Sechs Kreise statt „G“</div>
+    <div class="kreise" aria-label="A, R, L, B, A, J">
+      <div class="gross">A</div>
+      <div class="gross">R</div>
+      <div class="klein-k">L</div>
+      <div class="klein-k">B</div>
+      <div class="klein-k">A</div>
+      <div class="klein-k">J</div>
+    </div>
+    <h1>Familie Gröger</h1>
+    <div class="trenner" aria-hidden="true"></div>
+    <p class="klein">groeger.one</p>
+  </section>
+
+  <section>
+    <div class="label">Variante C – Eltern und Kinder getrennt</div>
+    <div class="monogramm" aria-hidden="true">G</div>
+    <h1>Familie Gröger</h1>
+    <div class="trenner" aria-hidden="true"></div>
+    <p class="eltern">A &amp; R</p>
+    <p class="kinder">L · B · A · J</p>
+  </section>
+
+</body>
+</html>
