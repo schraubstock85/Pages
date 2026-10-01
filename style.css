@@ -130,6 +130,14 @@ h1 {
   letter-spacing: 0.35em;
   padding-left: 0.35em;
 }
+.fehlercode {
+  font-size: clamp(4.5rem, 24vw, 7.5rem);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+  letter-spacing: 0.06em;
+  padding-left: 0.06em;
+}
 .hinweis {
   color: var(--muted);
   font-size: 1.05rem;
