@@ -47,6 +47,9 @@ body {
   font-family: "Gelasio", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
   text-align: center;
   transition: background-color 0.3s, color 0.3s;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 main { position: relative; z-index: 1; max-width: 36rem; }
 
@@ -143,7 +146,23 @@ h1 {
   font-size: 1.05rem;
 }
 
-/* Glühwürmchen, nur im Dunkelmodus sichtbar */
+/* Initialen: Tippen mischt die Reihenfolge (nur bis zum Neuladen) */
+.initialen { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.initialen .b { display: inline-block; }
+.gutenacht {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 1.75rem;
+  color: var(--muted);
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+.gutenacht.sichtbar { opacity: 1; }
+
+/* Glühwürmchen, nur im Dunkelmodus sichtbar und fangbar */
 .gluehwuermchen {
   position: fixed;
   inset: 0;
@@ -155,16 +174,32 @@ h1 {
   position: absolute;
   left: var(--x);
   top: var(--y);
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  animation: schweben var(--d) ease-in-out var(--v) infinite alternate;
+}
+.gluehwuermchen i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
   width: 3px;
   height: 3px;
+  margin: -1.5px 0 0 -1.5px;
   border-radius: 50%;
   background: #e4f2a8;
   box-shadow: 0 0 6px 2px rgba(214, 236, 140, 0.45);
   opacity: 0;
-  animation:
-    schweben var(--d) ease-in-out var(--v) infinite alternate,
-    leuchten calc(var(--d) / 2.5) ease-in-out var(--v) infinite;
+  animation: leuchten calc(var(--d) / 2.5) ease-in-out var(--v) infinite;
 }
+.gluehwuermchen i.neu::after {
+  animation:
+    auftauchen 1.2s ease-out,
+    leuchten calc(var(--d) / 2.5) ease-in-out 1.2s infinite;
+}
+.gluehwuermchen i.gefangen::after { animation: fangen 0.7s ease-out forwards; }
+
 @keyframes schweben {
   from { transform: translate(0, 0); }
   to { transform: translate(var(--dx), var(--dy)); }
@@ -173,9 +208,48 @@ h1 {
   0%, 100% { opacity: 0; }
   50% { opacity: 0.55; }
 }
+@keyframes auftauchen {
+  0% { opacity: 0; transform: scale(0.3); }
+  25% { opacity: 1; transform: scale(2.2); }
+  100% { opacity: 0.55; transform: scale(1); }
+}
+@keyframes fangen {
+  0% { opacity: 1; transform: scale(1); }
+  30% { opacity: 1; transform: scale(3.5); }
+  100% { opacity: 0; transform: scale(0.2); }
+}
+
+/* Blätter, die im Hellmodus nach einem Tipp zu Boden segeln */
+.blaetter {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.blatt {
+  position: absolute;
+  animation: fallen var(--f) cubic-bezier(0.35, 0, 0.65, 1) forwards;
+}
+.blatt svg {
+  display: block;
+  width: var(--g);
+  height: var(--g);
+  fill: var(--c);
+  animation: pendeln calc(var(--f) / 3) ease-in-out infinite alternate;
+}
+@keyframes fallen {
+  0% { opacity: 0; transform: translateY(0); }
+  8% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(var(--h)); }
+}
+@keyframes pendeln {
+  from { transform: translateX(-14px) rotate(var(--r1)); }
+  to { transform: translateX(14px) rotate(var(--r2)); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .monogramm circle, .einblenden { animation: none; }
-  .gluehwuermchen { display: none; }
+  .gluehwuermchen, .blaetter { display: none; }
   body, .monogramm circle { transition: none; }
 }
