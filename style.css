@@ -1,0 +1,173 @@
+@font-face {
+  font-family: "Gelasio";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/gelasio-latin.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: light;
+  --bg: #f4f1ea;
+  --fg: #12301f;
+  --muted: #6b8175;
+  --line: #c4ccbe;
+  --glow: 0;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1a13;
+  --fg: #eee9de;
+  --muted: #9fb3a6;
+  --line: #26402f;
+  --glow: 1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0b1a13;
+    --fg: #eee9de;
+    --muted: #9fb3a6;
+    --line: #26402f;
+    --glow: 1;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 2rem;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Gelasio", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+main { position: relative; z-index: 1; max-width: 36rem; }
+
+/* Monogramm: Kreis zeichnet sich beim Laden einmal */
+.monogramm {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 2rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 2rem;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.monogramm svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-90deg);
+}
+.monogramm circle {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 226;
+  stroke-dashoffset: 0;
+  animation: kreis 1.2s ease-in-out both;
+  transition: stroke 0.3s;
+}
+.monogramm:focus { outline: none; }
+.monogramm:focus-visible circle { stroke: var(--muted); }
+@media (hover: hover) {
+  .monogramm:hover circle { stroke: var(--muted); }
+}
+.einblenden { animation: einblenden 0.8s ease-out both; }
+.monogramm span { animation-delay: 0.3s; }
+h1.einblenden { animation-delay: 0.7s; }
+.trenner.einblenden { animation-delay: 0.9s; }
+.zeile.einblenden { animation-delay: 1.05s; }
+.zeile.einblenden + .zeile.einblenden { animation-delay: 1.2s; }
+
+@keyframes kreis {
+  from { stroke-dashoffset: 226; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes einblenden {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+h1 {
+  font-weight: normal;
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
+  letter-spacing: 0.02em;
+}
+.trenner {
+  width: 3rem;
+  height: 1px;
+  margin: 1.75rem auto;
+  background: var(--line);
+}
+.eltern {
+  font-size: 1.35rem;
+  letter-spacing: 0.2em;
+  padding-left: 0.2em;
+}
+.kinder {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 1rem;
+  letter-spacing: 0.35em;
+  padding-left: 0.35em;
+}
+.hinweis {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+/* Glühwürmchen, nur im Dunkelmodus sichtbar */
+.gluehwuermchen {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--glow);
+  transition: opacity 0.6s;
+}
+.gluehwuermchen i {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #e4f2a8;
+  box-shadow: 0 0 6px 2px rgba(214, 236, 140, 0.45);
+  opacity: 0;
+  animation:
+    schweben var(--d) ease-in-out var(--v) infinite alternate,
+    leuchten calc(var(--d) / 2.5) ease-in-out var(--v) infinite;
+}
+@keyframes schweben {
+  from { transform: translate(0, 0); }
+  to { transform: translate(var(--dx), var(--dy)); }
+}
+@keyframes leuchten {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .monogramm circle, .einblenden { animation: none; }
+  .gluehwuermchen { display: none; }
+  body, .monogramm circle { transition: none; }
+}
