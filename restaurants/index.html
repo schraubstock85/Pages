@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
 <title>Restaurants</title>
 <meta name="theme-color" content="#FBF6F0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14110E" media="(prefers-color-scheme: dark)">
@@ -31,7 +32,7 @@
   try {
     const raw = Uint8Array.from(atob(k.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
     const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
-    const buf = new Uint8Array(await (await fetch("app.enc?v=0b42d29519")).arrayBuffer());
+    const buf = new Uint8Array(await (await fetch("app.enc?v=11c018aa4a")).arrayBuffer());
     const app = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12))));
     try { localStorage.setItem(K, k); } catch {}
     if (!location.hash) history.replaceState(null, "", "#" + k);  // Link bleibt in der Adresse, damit "Zum Home-Bildschirm" ihn mitnimmt
