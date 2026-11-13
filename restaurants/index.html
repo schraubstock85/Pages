@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Restaurants</title>
+<meta name="theme-color" content="#FBF6F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110E" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Restaurants">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>
+  html { color-scheme: light dark; }
+  body { margin: 0; background: #FBF6F0; color: #1E1813; font-family: -apple-system, system-ui, sans-serif; }
+  @media (prefers-color-scheme: dark) { body { background: #14110E; color: #F3ECE2; } }
+  #gate { min-height: 100dvh; display: grid; place-items: center; text-align: center; padding: 24px; }
+  #gate p { opacity: .6; max-width: 20rem; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div id="gate"><p id="gatemsg"></p></div>
+<script>
+(async () => {
+  const K = "restaurants.key", k = location.hash.slice(1) || localStorage.getItem(K) || "";
+  const closed = () => { document.getElementById("gatemsg").textContent = "Diese Seite öffnet sich nur mit dem Einladungslink."; };
+  if (!k) return closed();
+  try {
+    const raw = Uint8Array.from(atob(k.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+    const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    const buf = new Uint8Array(await (await fetch("app.enc?v=0b42d29519")).arrayBuffer());
+    const app = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12))));
+    try { localStorage.setItem(K, k); } catch {}
+    if (!location.hash) history.replaceState(null, "", "#" + k);  // Link bleibt in der Adresse, damit "Zum Home-Bildschirm" ihn mitnimmt
+    const css = document.createElement("style"); css.textContent = app.css; document.head.appendChild(css);
+    document.body.innerHTML = app.html;
+    const js = document.createElement("script"); js.textContent = app.js; document.body.appendChild(js);
+  } catch { closed(); }
+})();
+</script>
+</body>
+</html>
